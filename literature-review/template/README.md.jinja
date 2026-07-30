@@ -1,0 +1,25 @@
+# {{ title }}
+
+作者：{{ author }} · 日期：{{ date }} · 语言：{{ language }}
+
+正式文稿模板（LaTeX tier）。结构：范围 → 主题脉络 → 方法对比 → 研究空白 → 对本研究的启示。
+
+## 编译
+
+```bash
+make            # latexmk -xelatex main.tex
+make figures    # 代码生成数据图（先填 scripts/metrics.csv）
+```
+
+## 字体与图
+
+- 字体基线：Libertinus（英文）+ Noto CJK SC（中文），编译用 **xelatex**；
+  首次使用先运行 academic-templates 仓库的 `fonts/setup-fonts.sh`。
+- 框架/脉络图：TikZ 代码（`figures/theme-map.tikz`）或模型自动生成，可版本化。
+- 科研数据图：`scripts/plot_metrics.py` 从 `metrics.csv`（人工从原文摘录的真实数据）生成，禁止截图。
+
+## 写作纪律
+
+- 按主题组织，不按文献逐篇罗列；
+- 每条"研究空白"必须有证据支撑；
+- 引用统一走 `references.bib` + biblatex（`\parencite` / `\textcite`）。

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/copier-org/copier/master/copier/schema.json
+_subdirectory: template
+project_name:
+  type: str
+  help: 项目目录名（kebab-case）
+  default: my-project
+description:
+  type: str
+  default: "A short description."
+author:
+  type: str
+  default: Shiqi
+license:
+  type: str
+  choices:
+    - MIT
+    - Apache-2.0
+    - Proprietary
+  default: MIT

@@ -1,0 +1,30 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\input{latex-fonts.tex}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{hyperref}
+\usepackage[backend=biber,style=authoryear,sorting=nyt]{biblatex}
+\addbibresource{references.bib}
+
+\title{ {{ title }} }
+\author{ {{ author }} }
+\date{ {{ date }} }
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{sections/01-scope}
+\input{sections/02-themes}
+\input{sections/03-comparison}
+\input{sections/04-gaps}
+\input{sections/05-agenda}
+
+\printbibliography
+\end{document}

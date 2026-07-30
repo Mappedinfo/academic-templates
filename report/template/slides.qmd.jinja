@@ -1,0 +1,45 @@
+---
+title: "{{ title }}"
+author: "{{ author }}"
+institute: "{{ institution }}"
+date: "{{ date }}"
+---
+
+## 本次主线 {.smaller}
+
+- 一句话：本次汇报想让听众记住什么
+- 背景半页，结果一页，瓶颈一页，下一步一页
+
+## 进展 → 证据
+
+Progress → Evidence → Interpretation → Risk → Next deliverable
+
+```{python}
+#| echo: false
+# 代码生成的数据图示例（字体基线见 scripts/matplotlib-style.mplstyle）
+import matplotlib.pyplot as plt
+plt.style.use("scripts/matplotlib-style.mplstyle")
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.plot([1, 2, 3, 4], [0.91, 0.88, 0.86, 0.85], marker="o")
+ax.set_xlabel("迭代 Iteration")
+ax.set_ylabel("指标 Metric")
+ax.set_title("真实数据绘制的示例图 Real-data plot")
+fig.savefig("figures/example.svg")
+plt.close(fig)
+```
+
+![示例图](figures/example.svg)
+
+## 瓶颈与求助
+
+- 当前最大的不确定性是什么
+- 需要听众在哪件事上给反馈
+
+## 下一步
+
+- 下次汇报前可验证的交付物（≤3 条）
+
+## 参考文献 {.smaller}
+
+{% raw %}::: {#refs}
+:::{% endraw %}

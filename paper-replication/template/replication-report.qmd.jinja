@@ -1,0 +1,55 @@
+---
+title: "复现报告：{{ paper_title }}"
+author: "{{ author }}"
+date: "{{ date }}"
+format:
+  html:
+    mainfont: "Libertinus Serif, Noto Serif CJK SC, serif"
+    sansfont: "Libertinus Sans, Noto Sans CJK SC, sans-serif"
+    monofont: "Libertinus Mono, Noto Sans Mono CJK SC, monospace"
+    toc: true
+  pdf: default
+bibliography: references.bib
+execute:
+  echo: true
+  warning: false
+---
+
+# 复现目标
+
+- 原论文：{{ paper_title }}（{{ paper_ref }}）
+- 复现范围：哪些核心 claim / 图 / 表（见 `replication/claims.md` 追踪表）
+- 不复现的部分与原因：
+
+# 环境
+
+- 代码来源：官方仓库 / 自行实现
+- 依赖：`pyproject.toml`（`uv sync` 安装）
+- 数据获取：见 `data/README.md`
+
+# 复现过程与结果
+
+```{python}
+#| label: fig-main
+#| fig-cap: "复现结果与原论文对比（代码根据真实运行数据绘制）"
+import matplotlib.pyplot as plt
+plt.style.use("scripts/matplotlib-style.mplstyle")
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.bar(["原论文", "本次复现"], [0.0, 0.0])  # 填入真实数值
+ax.set_ylabel("metric")
+fig.savefig("figures/replication-vs-paper.svg")
+plt.show()
+```
+
+# 差异分析
+
+与原论文不一致之处、可能原因（随机种子 / 数据版本 / 超参 / 实现细节）。
+
+# 结论
+
+逐条对照 `replication/claims.md`：复现成功 / 部分成功 / 未能复现。
+
+# 参考文献
+
+{% raw %}::: {#refs}
+:::{% endraw %}

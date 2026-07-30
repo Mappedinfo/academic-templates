@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/copier-org/copier/master/copier/schema.json
+_subdirectory: template
+project_name:
+  type: str
+  help: 项目目录名（kebab-case）
+  default: my-paper-code
+title:
+  type: str
+  help: 论文标题
+  default: Paper Title
+author:
+  type: str
+  default: Shiqi
+date:
+  type: str
+  default: "2026-07-22"
+language:
+  type: str
+  choices:
+    - en
+    - zh
+  default: en

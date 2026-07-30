@@ -1,0 +1,19 @@
+# 复现：{{ paper_title }}
+
+复现人：{{ author }} · 开始日期：{{ date }}
+
+论文复现模板（QMD tier：可复现报告 + 代码 + claim 追踪）。
+
+## 流程
+
+1. `data/README.md` 记录数据获取方式；
+2. `replication/claims.md` 列出要复现的核心 claim；
+3. `uv sync` 安装依赖，在 `src/` 实现复现管线；
+4. `quarto render replication-report.qmd` 产出复现报告（图由代码根据真实运行结果绘制）；
+5. 逐条回填 claim 状态，差异写入报告"差异分析"。
+
+## 纪律
+
+- 不修改原论文数值；所有对比图的数据来自真实运行；
+- 随机种子、依赖版本、数据版本写入报告"环境"节；
+- 复现失败也是有效结论——给出最小失败用例。

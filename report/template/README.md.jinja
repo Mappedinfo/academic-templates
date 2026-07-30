@@ -1,0 +1,18 @@
+# {{ title }}
+
+汇报人：{{ author }}（{{ institution }}） · 日期：{{ date }}
+
+## 渲染
+
+```bash
+quarto render slides.qmd
+# 产物在 docs/（见 _quarto.yml output-dir）
+```
+
+## 字体
+
+图片与幻灯片统一使用 Libertinus Sans + Noto Sans CJK SC 基线。
+首次使用先安装字体：`../fonts/setup-fonts.sh`（或 academic-templates 仓库根目录 `fonts/`）。
+
+matplotlib 图统一 `plt.style.use("scripts/matplotlib-style.mplstyle")`；
+数据图必须代码根据真实数据绘制，禁止截图。

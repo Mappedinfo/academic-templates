@@ -1,0 +1,14 @@
+\begin{tikzpicture}[font=\sffamily\small, node distance=8mm and 12mm,
+  box/.style={draw, rounded corners, align=center, inner sep=6pt}]
+  \node[box] (q) {研究问题};
+  \node[box, right=of q] (t1) {主题一};
+  \node[box, below=of t1] (t2) {主题二};
+  \node[box, below=of t2] (t3) {主题三};
+  \node[box, right=of t2] (gap) {研究空白};
+  \draw[->] (q) -- (t1);
+  \draw[->] (q) -- (t2);
+  \draw[->] (q) -- (t3);
+  \draw[->] (t1) -- (gap);
+  \draw[->] (t2) -- (gap);
+  \draw[->] (t3) -- (gap);
+\end{tikzpicture}

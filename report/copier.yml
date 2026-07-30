@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/copier-org/copier/master/copier/schema.json
+_subdirectory: template
+project_name:
+  type: str
+  help: 项目目录名（kebab-case）
+  default: my-report
+title:
+  type: str
+  help: 汇报标题
+  default: 研究进展汇报
+author:
+  type: str
+  default: Shiqi
+institution:
+  type: str
+  default: HKUST(GZ)
+date:
+  type: str
+  help: 汇报日期
+  default: "2026-07-22"

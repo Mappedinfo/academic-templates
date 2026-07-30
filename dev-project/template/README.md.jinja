@@ -1,0 +1,17 @@
+# {{ project_name }}
+
+{{ description }}
+
+作者：{{ author }} · License: {{ license }}
+
+## 开发
+
+```bash
+uv sync
+uv run pytest
+```
+
+## 结构
+
+- `src/{{ project_name | replace('-', '_') }}/` — 包源码（src layout）
+- `tests/` — pytest

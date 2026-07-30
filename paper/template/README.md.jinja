@@ -1,0 +1,26 @@
+# {{ title }}
+
+作者：{{ author }} · 日期：{{ date }} · 语言：{{ language }}
+
+论文项目模板（LaTeX tier，xelatex 编译）。
+
+## 编译
+
+```bash
+make            # latexmk -xelatex main.tex
+make figures    # 代码生成主结果图（先填 scripts/results.csv）
+```
+
+## 结构
+
+- `main.tex` — 导言区 + 各章节 `\input`
+- `sections/` — abstract / introduction / related-work / method / experiments / discussion / conclusion
+- `figures/` — 代码生成的图（禁止手画与截图）
+- `scripts/` — 绘图代码（matplotlib，字体基线已内置）
+- `references.bib` — 唯一引用源
+
+## 字体
+
+Libertinus（英文）+ Noto CJK SC（中文），首次使用先运行
+academic-templates 仓库的 `fonts/setup-fonts.sh`。投稿换模板时只需替换
+`\documentclass` 与样式行，字体段落（`latex-fonts.tex`）整体保留或按期刊要求替换。

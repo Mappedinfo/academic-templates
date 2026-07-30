@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/copier-org/copier/master/copier/schema.json
+_subdirectory: template
+project_name:
+  type: str
+  help: 项目目录名（kebab-case）
+  default: my-brainstorm
+topic:
+  type: str
+  help: 头脑风暴主题
+  default: 未定主题
+date:
+  type: str
+  default: "2026-07-22"

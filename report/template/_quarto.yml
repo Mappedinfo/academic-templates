@@ -1,0 +1,14 @@
+project:
+  type: default
+  output-dir: docs
+
+format:
+  revealjs:
+    theme: default
+    mainfont: "Libertinus Sans, Noto Sans CJK SC, sans-serif"
+    monofont: "Libertinus Mono, Noto Sans Mono CJK SC, monospace"
+    slide-number: true
+    toc: false
+    transition: fade
+
+bibliography: references.bib
