@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/copier-org/copier/master/copier/schema.json
+# Root questionnaire: enables `copier copy gh:mappedinfo/academic-templates <dest>`.
+# Each per-template copier.yml (for local use) must stay in sync with the
+# conditional questions below.
+_subdirectory: "{{ template }}/template"
+
+template:
+  type: str
+  help: 选择模板
+  choices:
+    汇报（Quarto .qmd 幻灯片）: report
+    文献综述（LaTeX）: literature-review
+    论文手稿（LaTeX）: paper
+    论文复现（QMD + Python）: paper-replication
+    开发项目（Python 包）: dev-project
+    论文+代码（LaTeX + Python）: paper-with-code
+    头脑风暴（Obsidian .md）: brainstorm
+
+project_name:
+  type: str
+  help: 项目目录名（kebab-case）
+  default: "my-{{ template }}"
+
+title:
+  type: str
+  help: 标题
+  default: "{% if template == 'report' %}研究进展汇报{% elif template == 'literature-review' %}某主题文献综述{% else %}Paper Title{% endif %}"
+  when: "{{ template in ['report', 'literature-review', 'paper', 'paper-with-code'] }}"
+
+author:
+  type: str
+  default: Shiqi
+  when: "{{ template != 'brainstorm' }}"
+
+institution:
+  type: str
+  default: HKUST(GZ)
+  when: "{{ template == 'report' }}"
+
+date:
+  type: str
+  default: "2026-07-22"
+  when: "{{ template != 'dev-project' }}"
+
+language:
+  type: str
+  help: 正文语言（中文稿件启用 CJK 字体设置）
+  choices:
+    - en
+    - zh
+  default: "{{ 'zh' if template == 'literature-review' else 'en' }}"
+  when: "{{ template in ['literature-review', 'paper', 'paper-with-code'] }}"
+
+paper_title:
+  type: str
+  help: 被复现论文标题
+  default: "Target Paper Title"
+  when: "{{ template == 'paper-replication' }}"
+
+paper_ref:
+  type: str
+  help: 被复现论文引用（DOI/arXiv/会议）
+  default: "doi:10.0000/example"
+  when: "{{ template == 'paper-replication' }}"
+
+description:
+  type: str
+  default: "A short description."
+  when: "{{ template == 'dev-project' }}"
+
+license:
+  type: str
+  choices:
+    - MIT
+    - Apache-2.0
+    - Proprietary
+  default: MIT
+  when: "{{ template == 'dev-project' }}"
+
+topic:
+  type: str
+  help: 头脑风暴主题
+  default: 未定主题
+  when: "{{ template == 'brainstorm' }}"

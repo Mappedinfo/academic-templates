@@ -33,15 +33,18 @@
 # 安装 copier（任一）
 uv tool install copier        # 或：pipx install copier
 
-# 初始化一个项目
-copier copy gh:mappedinfo/academic-templates/report ~/Coding/my-report
-copier copy gh:mappedinfo/academic-templates/paper ~/Coding/my-paper
+# 方式一：直接从 GitHub 初始化（交互式选择模板）
+copier copy gh:mappedinfo/academic-templates ~/Coding/my-project
 
-# 本地克隆后使用
+# 非交互指定模板与变量
+copier copy --defaults --data template=paper --data project_name=my-paper \
+  gh:mappedinfo/academic-templates ~/Coding/my-paper
+
+# 方式二：本地克隆后按模板使用
 copier copy ./academic-templates/literature-review ~/Coding/my-review
 ```
 
-copier 会逐个询问 `project_name`、`title`、`author` 等变量（均有默认值，
+copier 会逐个询问 `template`、`project_name`、`title`、`author` 等变量（均有默认值，
 `--defaults` 可全部跳过）。已生成的项目日后可用 `copier update` 跟随模板升级。
 
 ## 格式宪法
