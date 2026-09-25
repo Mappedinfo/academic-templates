@@ -1,0 +1,11 @@
+# 一个 URL 一行；空行与 # 开头的行会被忽略。
+# 用法：cp config/urls.example.txt config/urls.txt，然后填入真实端点。
+#
+# python3 scripts/fetch_and_plot.py --urls config/urls.txt
+#
+# 清单是排序去重后请求的，顺序不影响结果；原始响应缓存在 data/cache/，
+# 重跑只补失败的条目，--refresh 才会忽略缓存全部重取。
+#
+# 示例（换成你自己的端点）：
+# https://api.example.org/v1/stations?city=guangzhou
+# https://api.example.org/v1/observations?station=GZ01&date=2026-07-22

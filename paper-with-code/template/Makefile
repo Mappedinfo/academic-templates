@@ -2,6 +2,10 @@ LATEXMK = latexmk -xelatex -interaction=nonstopmode -halt-on-error
 
 all: experiments figures paper
 
+fetch:
+	@test -f config/urls.txt || { echo "create config/urls.txt from config/urls.example.txt"; exit 1; }
+	python3 scripts/fetch_and_plot.py --urls config/urls.txt
+
 experiments:
 	python3 scripts/run_experiments.py
 
@@ -17,4 +21,4 @@ test:
 clean:
 	cd paper && latexmk -C
 
-.PHONY: all experiments figures paper test clean
+.PHONY: all fetch experiments figures paper test clean

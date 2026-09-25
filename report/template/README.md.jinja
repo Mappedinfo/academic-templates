@@ -9,6 +9,19 @@ quarto render slides.qmd
 # 产物在 docs/（见 _quarto.yml output-dir）
 ```
 
+## 取数与预览
+
+`scripts/fetch_and_plot.py`：批量 HTTP/API 取数，有界并发 + 磁盘缓存 + 断点续跑 + 立即出图。
+
+```bash
+cp config/urls.example.txt config/urls.txt          # 一个 URL 一行
+python3 scripts/fetch_and_plot.py --urls config/urls.txt
+python3 scripts/fetch_and_plot.py --selftest        # 离线验证字体与绘图样式
+```
+
+原始响应缓存在 `data/cache/`（已 gitignore），`data/fetch_manifest.csv` 是可追溯清单；
+预览图写到 `figures/fetch-preview.pdf`——先看图再写结论。整批取数放后台跑，不要阻塞对话。
+
 ## 字体
 
 图片与幻灯片统一使用 Libertinus Sans + Noto Sans CJK SC 基线。

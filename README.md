@@ -58,10 +58,33 @@ copier 会逐个询问 `template`、`project_name`、`title`、`author` 等变�
 图的纪律：科研数据图**必须代码根据真实数据绘制**；流程图/框架图可模型生成
 （TikZ / draw.io），但同样要求可版本化、与正文一致。禁止手绘数据图、禁止截图。
 
+## 数据获取与立即出图
+
+`paper/`、`paper-replication/`、`paper-with-code/`、`report/` 四个模板自带
+`scripts/fetch_and_plot.py`：批量 HTTP/API 取数的默认实现，**有界并发 + 磁盘缓存 +
+断点续跑 + 立即出图**。
+
+```bash
+cp config/urls.example.txt config/urls.txt          # 一个 URL 一行
+python3 scripts/fetch_and_plot.py --urls config/urls.txt   # 或 make fetch
+python3 scripts/fetch_and_plot.py --selftest               # 离线：只画合成数据
+```
+
+纪律（详见 [`shared/README.md`](shared/README.md)）：
+
+- 对一批 API 写串行 `for` 循环是 bug，不是简化；默认 `--concurrency 8`。
+- 原始响应落盘 `data/cache/`，重跑只补失败项，重画不重新取数。
+- 数据到手先出 `figures/fetch-preview.pdf` 看图，再写文字结论；预览图标题明写
+  `not a result figure`，避免被当成结果图。
+- 整批取数放后台跑，不阻塞对话；`data/fetch_manifest.csv` 是 url/状态/字节数/时间的
+  可追溯清单。
+
 ## 仓库结构
 
 ```text
 fonts/                 字体基线的唯一权威来源（策略、安装脚本、各工具链接入文件）
+shared/                跨模板共享的实验工具权威来源（取数脚本、URL 清单示例）
+scripts/sync-shared.sh 权威源 -> 各模板副本；--check 只查漂移并以退出码报错
 <template>/
   copier.yml           变量定义
   template/            模板文件（*.jinja 会被变量渲染，其余原样拷贝）
@@ -72,4 +95,6 @@ fonts/                 字体基线的唯一权威来源（策略、安装脚本
 1. 新建 `<name>/copier.yml` + `<name>/template/`；
 2. 涉及字体的文件复用 `fonts/` 下的接入文件（LaTeX `latex-fonts.tex`、
    matplotlib `matplotlib-style.mplstyle`、R `ggplot-theme.R`）；
-3. 在本 README 的模板清单中登记。
+3. 需要共享实验工具就放一份 `shared/scripts/fetch_and_plot.py` 与
+   `shared/config/urls.example.txt` 的副本，然后跑 `./scripts/sync-shared.sh`；
+4. 在本 README 的模板清单中登记。

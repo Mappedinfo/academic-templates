@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+# raw cached responses: regenerate with scripts/fetch_and_plot.py, never commit
+data/cache/
