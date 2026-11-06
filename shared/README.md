@@ -28,6 +28,7 @@
 |---|---|
 | `scripts/fetch_and_plot.py` | 批量 HTTP/API 取数：有界并发 + 磁盘缓存 + 断点续跑 + 立即出图 |
 | `config/urls.example.txt` | URL 清单格式示例（复制为 `config/urls.txt` 后使用） |
+| `data-exploration/` | 本地 Notebook、绘图数据目录和图目录，远端计算按需经 SSH 取回 |
 
 ## fetch_and_plot.py 的纪律
 

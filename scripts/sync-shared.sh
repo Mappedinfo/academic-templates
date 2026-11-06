@@ -20,6 +20,12 @@ ASSETS=(
   "shared/scripts/fetch_and_plot.py:scripts/fetch_and_plot.py"
   "shared/config/urls.example.txt:config/urls.example.txt"
   "shared/gitignore:.gitignore:paper,paper-with-code,paper-replication,report"
+  "shared/data-exploration/README.md:analysis/data-exploration/README.md:paper-replication,paper-with-code"
+  "shared/data-exploration/analysis.ipynb:analysis/data-exploration/analysis.ipynb:paper-replication,paper-with-code"
+  "shared/data-exploration/scripts/summarize.py:analysis/data-exploration/scripts/summarize.py:paper-replication,paper-with-code"
+  "shared/data-exploration/scripts/plot.R:analysis/data-exploration/scripts/plot.R:paper-replication,paper-with-code"
+  "shared/data-exploration/plot-data/.gitignore:analysis/data-exploration/plot-data/.gitignore:paper-replication,paper-with-code"
+  "shared/data-exploration/figures/.gitignore:analysis/data-exploration/figures/.gitignore:paper-replication,paper-with-code"
 )
 
 drift=0

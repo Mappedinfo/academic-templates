@@ -79,6 +79,14 @@ python3 scripts/fetch_and_plot.py --selftest               # 离线：只画合�
 - 整批取数放后台跑，不阻塞对话；`data/fetch_manifest.csv` 是 url/状态/字节数/时间的
   可追溯清单。
 
+## 实验数据探索
+
+`paper-replication` 和 `paper-with-code` 初始化后自带 `analysis/data-exploration/`：
+本地 `analysis.ipynb` 查看和重绘，`plot-data/` 保存本机汇总，`figures/` 保存本地图。
+原始数据可留在远程原位置；按需由本地 Notebook 经 SSH 执行获准汇总并取回数据。
+操作、数据保护与 Notebook 参数见生成项目中的该目录 README；项目可按需要改用
+Quarto、R Markdown 或其他报告格式。模板不会在初始化时连接远程或生成虚构结果。
+
 ## 仓库结构
 
 ```text
