@@ -14,4 +14,6 @@
 
 `python scripts/summarize.py --input <真实原始.csv> --group <分组列> --value <数值列> --output plot-data/summary.csv` 对 CSV 分块计算行数、有效数、零、缺失、总和和均值；默认只有空字符串为缺失，其他缺失符号用 `--missing-token` 明确声明。它只做一个分组列与一个数值列的汇总，时间/空间粒度、覆盖分母和复杂输入须按实际数据扩展。
 
-`Rscript scripts/plot.R plot-data/summary.csv <x列> <y列> figures/summary.pdf` 在本机用保存的汇总表画图（需要 SVG 时可指定 `.svg` 并确保 Cairo 可用）；输出已存在时需要新文件名。Notebook 可按实际项目将 `REMOTE_COMMAND` 指向远端项目中的汇总脚本。
+`Rscript scripts/plot.R plot-data/summary.csv <x列> <y列> figures/summary.pdf` 在本机用保存的汇总表画图（需要 SVG 时可指定 `.svg`；优先使用 R 包 `svglite`，否则使用 R 自带的 Cairo SVG 设备）；输出已存在时需要新文件名。Notebook 可按实际项目将 `REMOTE_COMMAND` 指向远端项目中的汇总脚本。
+
+本机需要 SVG 且 `svglite` 不可用时，可在有网络的 R 环境安装 `svglite`；保持项目依赖及实际 R 库路径可复查。

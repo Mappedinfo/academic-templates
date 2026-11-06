@@ -62,6 +62,22 @@ class NotebookTemplateTests(unittest.TestCase):
             if cell['cell_type'] == 'code': compile(''.join(cell['source']), '<notebook>', 'exec')
 
 class ScriptIntegrationTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('Rscript'), 'R unavailable')
+    def test_svg_redraw_from_local_summary(self):
+        available = subprocess.run(['Rscript', '-e', 'quit(status=if (requireNamespace("svglite", quietly=TRUE)) 0 else 2)'], capture_output=True)
+        if available.returncode != 0:
+            self.skipTest('svglite unavailable; SVG fallback is environment dependent')
+        root = NOTEBOOK.parent
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory); source = tmp / 'summary.csv'; output = tmp / 'summary.svg'
+            source.write_text('hour,count\n08,12\n09,18\n10,7\n')
+            before = source.read_bytes()
+            result = subprocess.run(['Rscript', str(root/'scripts/plot.R'), str(source), 'hour', 'count', str(output)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('<svg', output.read_text())
+            self.assertEqual(before, source.read_bytes())
+            self.assertNotEqual(subprocess.run(['Rscript', str(root/'scripts/plot.R'), str(source), 'hour', 'count', str(output)], capture_output=True).returncode, 0)
+
     @unittest.skipUnless(importlib.util.find_spec('pandas'), 'pandas unavailable')
     @unittest.skipUnless(shutil.which('Rscript'), 'R unavailable')
     def test_real_csv_summary_and_r_plot(self):

@@ -16,11 +16,15 @@ extension <- tolower(tools::file_ext(output))
 if (extension == "pdf") {
   pdf(output, width = 7, height = 4)
 } else if (extension == "svg") {
-  svg(output, width = 7, height = 4)
+  if (requireNamespace("svglite", quietly = TRUE)) {
+    svglite::svglite(output, width = 7, height = 4)
+  } else {
+    svg(output, width = 7, height = 4)
+  }
 } else {
   stop("输出格式必须是 .pdf 或 .svg")
 }
-if (dev.cur() == 1L) stop("绘图设备未启动；请检查 SVG/Cairo 依赖或改用 PDF")
+if (dev.cur() == 1L) stop("绘图设备未启动；请安装 svglite 或检查 SVG/Cairo 依赖，亦可改用 PDF")
 x <- data[[x_column]]
 if (is.character(x)) x <- factor(x)
 plot(x, data[[y_column]], xlab = x_column, ylab = y_column)
