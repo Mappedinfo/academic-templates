@@ -17,3 +17,9 @@
 `Rscript scripts/plot.R plot-data/summary.csv <x列> <y列> figures/summary.pdf` 在本机用保存的汇总表画图（需要 SVG 时可指定 `.svg`；优先使用 R 包 `svglite`，否则使用 R 自带的 Cairo SVG 设备）；输出已存在时需要新文件名。Notebook 可按实际项目将 `REMOTE_COMMAND` 指向远端项目中的汇总脚本。
 
 本机需要 SVG 且 `svglite` 不可用时，可在有网络的 R 环境安装 `svglite`；保持项目依赖及实际 R 库路径可复查。
+
+## 初始化绘图环境检查
+
+运行 `python scripts/check_dependencies.py`（从本目录）或 `python analysis/data-exploration/scripts/check_dependencies.py`（从项目根目录）。检查器在临时目录实际绘制并检查 R 自带 SVG、`svglite` SVG、R PDF 与当前 Python 环境的 Matplotlib；macOS 额外查看 XQuartz 安装记录。可使用 `--json` 供工具读取。检查不会安装软件或修改项目，缺少可选依赖时仍正常退出。
+
+R SVG 或 XQuartz 不是强制依赖：可用 PDF、Python 图件、已有图件或文字报告，按项目需求选择。没有任何可用绘图路径时，报告未完成的图件并按检查输出选择安装；不要把安装提示当作科研运行已完成。Notebook 的内核可能与终端使用不同的 Python 环境，应在实际本地内核环境中重新检查。
