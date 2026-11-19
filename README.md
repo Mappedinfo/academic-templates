@@ -3,6 +3,55 @@
 一套标准化的科研工作模板库，统一解决**中文字体、英文字体、图片字体**问题，
 覆盖科研项目的常见形态。每个子目录是一个独立的 [copier](https://copier.readthedocs.io/) 模板。
 
+## ATS：从 Git 安装
+
+ATS（Academic Template Starter）是这套模板的小型 Python CLI，需要 Python 3.11+、
+[uv](https://docs.astral.sh/uv/) 和 Git。本轮仅通过现有 Git 仓库分发，不上传 PyPI。
+以下安装命令固定使用 `v0.1.0`，不会随默认分支变化。
+
+```bash
+uv tool install 'mappedinfo-ats @ git+https://github.com/Mappedinfo/academic-templates.git@v0.1.0'
+ats --version
+ats list
+ats init paper-with-code my-paper
+
+# 可选：覆盖问卷变量，其余使用原 Copier 默认值
+ats init paper-with-code another-paper --data 'title=My Paper' --data author=Alice --data language=en
+
+# 卸载 CLI（已生成的项目仍保留）
+uv tool uninstall mappedinfo-ats
+```
+
+`init` 的目标必须是不存在的新目录；已有目录（包括空目录）、文件或符号链接均会被拒绝。
+项目名默认取目标目录名。初始化只渲染模板，不运行模板任务、不自动信任模板、不训练、
+不安装字体或项目依赖，也不初始化 Git。`paper-with-code` 的实验脚本目前写入占位数据，
+真实训练、数据、指标与实验协议需要在新项目内实现；本版不迁移已有实验。
+
+安装包自带全部 7 个模板，初始化无需再下载仓库，离开源码目录也能使用。
+模板仍只在现有 `<template>/copier.yml` 和 `<template>/template/` 中维护：构建钩子
+将同一份文件打入 wheel，sdist 保留原路径，仓库中不维护第二套副本。
+
+ATS 与 `academic-project-init` 使用同一套 Copier 来源。需要固定已发布版本时用上述 ATS
+命令；该 skill 已有的本地仓库具体提交哈希与直接 Copier 调用路径继续适用。ATS 不代替
+skill 的字体、编译、依赖检查等后续工作。`paper-with-code`、`paper-replication` 已生成的
+`.copier-answers.yml` 由 ATS 记录为本仓库的对应版本 tag；其他模板沿用原有行为。
+使用 `copier update` 前先提交项目修改并检查 answers 文件与来源版本。
+
+仓库目前未声明许可证；本版不添加许可证或授权声明。
+
+维护者可在干净 checkout 中构建和验证同一份标准 Python 包（无需发布到 PyPI）：
+
+```bash
+uv build
+uv tool install ./dist/mappedinfo_ats-0.1.0-py3-none-any.whl
+python3 scripts/smoke_ats.py "$(command -v ats)"
+```
+
+GitHub Actions 构建 wheel/sdist 并验证已安装 CLI，构建产物保存在工作流 artifacts 中。
+本次 `v0.1.0` 的发布分支在验证通过后创建新 tag，再从远端 tag 使用隔离环境安装并运行
+同一 smoke 脚本，成功后创建 GitHub Release 并附上 wheel/sdist。
+已有 tag 保持不变；当前仓库不自动发布到包注册表。
+
 ## 字体基线（所有模板共享）
 
 **Libertinus（英文）+ Noto CJK SC（中文）**——开源、跨平台可复现、Times 兼容。
@@ -44,8 +93,9 @@ copier copy --defaults --data template=paper --data project_name=my-paper \
 copier copy ./academic-templates/literature-review ~/Coding/my-review
 ```
 
-copier 会逐个询问 `template`、`project_name`、`title`、`author` 等变量（均有默认值，
-`--defaults` 可全部跳过）。已生成的项目日后可用 `copier update` 跟随模板升级。
+Copier 会逐个询问 `template`、`project_name`、`title`、`author` 等变量，
+`--defaults` 使用默认值。需要升级时先确认生成了 `.copier-answers.yml`；
+`paper-with-code` 和 `paper-replication` 已包含该文件，其他模板不能假定支持 `copier update`。
 
 ## 格式宪法
 

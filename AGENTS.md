@@ -1,8 +1,9 @@
 # Agents notes for academic-templates
 
-- Multi-template copier repo: each top-level dir (except `fonts/`, `shared/` and
-  `scripts/`) is a standalone copier template with its own `copier.yml` +
-  `template/`.
+- Multi-template copier repo: top-level dirs containing `copier.yml` +
+  `template/` are standalone Copier templates. `src/ats/` contains the ATS CLI;
+  `hatch_build.py` packages the canonical template files at build time. Never
+  add a maintained copy under `src/ats/_templates/`.
 - Root `copier.yml` enables remote use (`copier copy gh:mappedinfo/academic-templates`):
   it asks which template via a `template` choice and sets `_subdirectory`
   accordingly, with per-template conditional questions (`when`). When adding or
