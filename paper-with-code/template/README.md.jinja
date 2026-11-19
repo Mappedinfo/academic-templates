@@ -2,7 +2,9 @@
 
 作者：{{ author }} · 日期：{{ date }} · 语言：{{ language }}
 
-论文 + 代码一体模板。核心管线：
+论文 + 代码一体模板。以下是待接入真实实验的管线骨架；
+`scripts/run_experiments.py` 当前仅写入占位行，不执行训练，不能作为论文结果。
+初始化不运行该管线，也不迁移旧实验。
 
 ```text
 code/ 实验代码 -> experiments/results/results.csv
@@ -18,7 +20,7 @@ code/ 实验代码 -> experiments/results/results.csv
 ## 常用命令
 
 ```bash
-make all      # 跑实验 -> 生成图 -> 编译论文（xelatex）
+make all      # 写入占位数据 -> 生成示例图 -> 编译论文（接入真实实验前仅用于演示）
 make test     # 代码测试
 ```
 

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mappedinfo-ats"
+dynamic = ["version"]
+description = "Academic Template Starter: initialize research projects with Copier"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["copier>=9.11.3,<10", "PyYAML>=6,<7"]
+
+[project.scripts]
+ats = "ats.cli:main"
+
+[project.urls]
+Repository = "https://github.com/Mappedinfo/academic-templates"
+Issues = "https://github.com/Mappedinfo/academic-templates/issues"
+
+[tool.hatch.version]
+path = "src/ats/__init__.py"
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ats"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/ats", "pyproject.toml", "README.md", "hatch_build.py", "scripts/smoke_ats.py"]

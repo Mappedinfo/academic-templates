@@ -1,0 +1,105 @@
+name: ATS package smoke test
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v6
+      - name: Build sdist and wheel from the canonical templates
+        run: uv build
+      - name: Install the wheel in an isolated tool environment
+        env:
+          UV_TOOL_DIR: ${{ runner.temp }}/ats-tools
+          UV_TOOL_BIN_DIR: ${{ runner.temp }}/ats-bin
+        run: uv tool install ./dist/*.whl
+      - name: Verify installed CLI outside the checkout
+        run: python scripts/smoke_ats.py "$RUNNER_TEMP/ats-bin/ats"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ats-dist
+          path: dist/*
+
+  release-v0-1-0:
+    needs: smoke
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/ats-cli-v0.1.0'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: ats-dist
+          path: dist
+      - name: Check the first release version and existing tag
+        id: tag
+        shell: bash
+        run: |
+          version=$(python -c 'import runpy; print(runpy.run_path("src/ats/__init__.py")["__version__"])')
+          test "$version" = '0.1.0'
+          if git ls-remote --exit-code --tags origin refs/tags/v0.1.0; then
+            echo 'Existing v0.1.0 remains unchanged; no release attempted.'
+            echo 'publish=false' >> "$GITHUB_OUTPUT"
+          else
+            status=$?
+            if [ "$status" -ne 2 ]; then exit "$status"; fi
+            echo 'publish=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Create a new tag without replacing existing refs
+        if: steps.tag.outputs.publish == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag -a v0.1.0 -m 'ATS v0.1.0'
+          git push origin refs/tags/v0.1.0
+      - name: Install from the remote Git tag and verify initialization
+        if: steps.tag.outputs.publish == 'true'
+        env:
+          UV_CACHE_DIR: ${{ runner.temp }}/ats-release-cache
+          UV_TOOL_DIR: ${{ runner.temp }}/ats-release-tools
+          UV_TOOL_BIN_DIR: ${{ runner.temp }}/ats-release-bin
+        run: |
+          uv tool install 'mappedinfo-ats @ git+https://github.com/Mappedinfo/academic-templates.git@v0.1.0'
+          python scripts/smoke_ats.py "$RUNNER_TEMP/ats-release-bin/ats"
+          "$RUNNER_TEMP/ats-release-bin/ats" --version
+          {
+            echo 'Remote Git installation and scaffold smoke test passed.'
+            echo "Commit: $GITHUB_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Create GitHub Release with wheel and sdist
+        if: steps.tag.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > "$RUNNER_TEMP/ats-release-notes.md" <<'NOTES'
+          Academic Template Starter provides `ats list` and `ats init paper-with-code my-paper` using the repository's canonical Copier templates.
+
+          Install with:
+          ```sh
+          uv tool install 'mappedinfo-ats @ git+https://github.com/Mappedinfo/academic-templates.git@v0.1.0'
+          ats list
+          ats init paper-with-code my-paper
+          ```
+
+          Initialization requires a new destination, skips template tasks, and does not run training. Experiment scripts contain placeholders. Existing Copier paths remain available.
+
+          Validation: sdist-to-wheel build; installed template list and temporary paper-with-code scaffold outside source; existing directory protection; no experiment execution; fresh remote Git tag installation and the same smoke test.
+
+          The release contains the standard Python wheel and sdist. No PyPI/npm publication and no license change.
+          NOTES
+          gh release create v0.1.0 --verify-tag --title 'ATS v0.1.0' --notes-file "$RUNNER_TEMP/ats-release-notes.md" dist/*
